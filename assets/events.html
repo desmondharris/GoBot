@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Events</title>
+  <style>
+    /* Base styling */
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #121212;
+      color: #E0E0E0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 600px;
+      padding: 20px;
+      border-radius: 15px;
+      background-color: #1F1F1F;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    header a {
+      color: #76C7C0;
+      text-decoration: none;
+      padding: 8px 12px;
+      border-radius: 8px;
+      background-color: #333;
+      transition: background-color 0.3s ease;
+    }
+
+    header a:hover {
+      background-color: #444;
+    }
+
+    /* Form styling */
+    .form-section {
+      margin-bottom: 20px;
+    }
+
+    .form-section h2 {
+      margin-top: 0;
+    }
+
+    label {
+      display: block;
+      margin: 8px 0 4px;
+    }
+
+    input[type="text"], input[type="date"], input[type="time"], select {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border-radius: 8px;
+      border: none;
+      background-color: #333;
+      color: #E0E0E0;
+    }
+
+    .checkbox-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .checkbox-container label {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .checkbox-container input[type="checkbox"] {
+      margin: 0;
+    }
+
+    button {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      border-radius: 8px;
+      border: none;
+      background-color: #76C7C0;
+      color: #121212;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #5aa8a2;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <!-- Header with navigation links -->
+  <header>
+    <h1>GoBot</h1>
+    <nav>
+      <a href="events.html">Events</a>
+      <a href="todo.html">To-Do</a>
+    </nav>
+  </header>
+
+  <!-- Event Form -->
+  <div class="form-section">
+    <h2>Event</h2>
+    <form>
+      <label for="event-name">Event Name</label>
+      <input type="text" id="event-name" name="event-name">
+
+      <label for="event-date">Date</label>
+      <input type="date" id="event-date" name="event-date">
+
+      <label for="event-time">Time</label>
+      <input type="time" id="event-time" name="event-time">
+
+      <label>Reminders</label>
+      <div class="checkbox-container">
+        <label><input type="checkbox" name="reminder" value="5 minutes"> 5 minutes</label>
+        <label><input type="checkbox" name="reminder" value="15 minutes"> 15 minutes</label>
+        <label><input type="checkbox" name="reminder" value="30 minutes"> 30 minutes</label>
+        <label><input type="checkbox" name="reminder" value="1 hour"> 1 hour</label>
+        <label><input type="checkbox" name="reminder" value="2 hours"> 2 hours</label>
+        <label><input type="checkbox" name="reminder" value="1 day"> 1 day</label>
+        <label><input type="checkbox" name="reminder" value="2 days"> 2 days</label>
+        <label><input type="checkbox" name="reminder" value="1 week"> 1 week</label>
+      </div>
+
+      <button type="submit">Create</button>
+    </form>
+  </div>
+
+  <!-- Recurring Event Form -->
+  <div class="form-section">
+    <h2>Recurring Event</h2>
+    <form>
+      <label for="recurring-name">Event Name</label>
+      <input type="text" id="recurring-name" name="recurring-name">
+
+      <label for="recurring-event-time">Event Time</label>
+      <input type="time" id="recurring-event-time" name="event-time">
+
+      <label for="recurring-frequency">Frequency</label>
+      <select id="recurring-frequency" name="recurring-frequency">
+        <option value="daily">Daily</option>
+        <option value="weekly">Weekly</option>
+        <option value="monthly">Monthly</option>
+      </select>
+
+      <div id="dynamic-section">
+
+      </div>
+      <button type="submit">Create</button>
+    </form>
+  </div>
+
+</div>
+
+</body>
+</html>
