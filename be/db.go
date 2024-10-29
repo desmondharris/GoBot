@@ -94,6 +94,19 @@ func parseUInt(idStr string) (uint, error) {
 	return id, nil
 }
 
+// TODO: implement this
+func isValidZip(zip uint) bool {
+	return true
+}
+func parseZip(zipStr string) (uint, error) {
+	zip64, err := strconv.ParseUint(zipStr, 10, 64)
+	if err != nil {
+		return 0, err
+	}
+	zip := uint(zip64)
+	return zip, nil
+}
+
 /*
 GET Methods
 */
@@ -161,19 +174,6 @@ PUT methods
 */
 func UpdateUser(c *gin.Context) bool {
 
-}
-
-// TODO: implement this
-func isValidZip(zip uint) bool {
-	return true
-}
-func parseZip(zipStr string) (uint, error) {
-	zip64, err := strconv.ParseUint(zipStr, 10, 64)
-	if err != nil {
-		return 0, err
-	}
-	zip := uint(zip64)
-	return zip, nil
 }
 
 func SetUserZip(c *gin.Context) {
