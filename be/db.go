@@ -49,6 +49,7 @@ type ToDo struct {
 	UserID    uint
 	Name      string
 	Completed bool
+	UpdatedAt time.Time
 }
 
 type Reminder struct {
@@ -84,53 +85,85 @@ func DBConn() (*gorm.DB, error) {
 
 var db, _ = DBConn()
 
-func parseId(idStr string) uint {
+func parseUInt(idStr string) (uint, error) {
 	id64, err := strconv.ParseUint(idStr, 10, 64)
 	if err != nil {
-		fmt.Println("Error converting id to UINT in GetUser")
+		return 0, err
 	}
 	id := uint(id64)
-	return id
+	return id, nil
 }
 
 /*
 GET Methods
 */
 func GetUser(c *gin.Context) {
-	id := parseId(c.Param("id"))
+	id, err := parseUInt(c.Param("id"))
+	if err != nil {
+		c.IndentedJSON(500, "Error fetching user")
+	}
 	usr := User{}
 	result := db.First(&usr, id)
 	if result.Error != nil {
-		c.IndentedJSON(http.StatusNoContent, "")
+		c.IndentedJSON(500, "Database Error")
 		return
 	}
 	c.IndentedJSON(http.StatusOK, usr)
 }
 
 func GetUserEvents(c *gin.Context) {
-	id := parseId(c.Param("id"))
+	id, err := parseUInt(c.Param("id"))
+	if err != nil {
+		c.IndentedJSON(500, "Error fetching user\n"+err.Error())
+		return
+	}
 	var events []Event
-	db.First(&events, "user_id = ?", id)
+	result := db.First(&events, "user_id = ?", id)
+	if result.Error != nil {
+		c.IndentedJSON(500, "Database Error")
+		return
+	}
 	c.IndentedJSON(http.StatusOK, events)
 }
 
 func GetUserRecurringEvents(c *gin.Context) {
-	id := parseId(c.Param("id"))
+	id, err := parseUInt(c.Param("id"))
+	if err != nil {
+		c.IndentedJSON(500, "Error fetching recurring event:\n"+err.Error())
+		return
+	}
 	var events []RecurringEvent
-	db.First(&events, "user_id = ?", id)
+	result := db.First(&events, "user_id = ?", id)
+	if result.Error != nil {
+		c.IndentedJSON(500, "Database Error")
+		return
+	}
 	c.IndentedJSON(http.StatusOK, events)
 }
 
 func GetUserToDo(c *gin.Context) {
-	id := parseId(c.Param("id"))
+	id, err := parseUInt(c.Param("id"))
+	if err != nil {
+		c.IndentedJSON(500, "Error fetching todo:\n"+err.Error())
+		return
+	}
 	var todo []ToDo
-	db.First(&todo, "id = ?", id)
+	result := db.First(&todo, "id = ?", id)
+	if result.Error != nil {
+		c.IndentedJSON(500, "Database Error")
+		return
+	}
 	c.IndentedJSON(http.StatusOK, todo)
 }
 
 /*
-Setter methods
+PUT methods
 */
+func UpdateUser(c *gin.Context) bool {
+
+}
+
+// TODO: implement this
 func isValidZip(zip uint) bool {
 	return true
 }
@@ -145,13 +178,14 @@ func parseZip(zipStr string) (uint, error) {
 
 func SetUserZip(c *gin.Context) {
 	zip, err := parseZip(c.Param("zip"))
-	id := parseId(c.Param("id"))
-	println(zip)
-	println(id)
 	if err != nil {
-		fmt.Println("Error parsing ZIP")
+		c.IndentedJSON(500, "Invalid ZIP:\n"+err.Error())
 	}
-
+	id, err := parseUInt(c.Param("id"))
+	if err != nil {
+		c.IndentedJSON(500, "Error fetching user\n"+err.Error())
+	}
+	b
 	usr := User{}
 	db.First(&usr, id)
 	usr.ZIP = zip
@@ -159,7 +193,7 @@ func SetUserZip(c *gin.Context) {
 	c.IndentedJSON(http.StatusOK, true)
 }
 
-func extractint(str string) (int, error) {
+func extractInt(str string) (int, error) {
 	num64, err := strconv.ParseInt(str, 10, 64)
 	if err != nil {
 		return 9999, err
@@ -170,10 +204,10 @@ func extractint(str string) (int, error) {
 
 func SetUserUTCOffset(c *gin.Context) {
 	offsetStr := c.Param("offset")
-	offset, err := extractint(offsetStr)
+	offset, err := extractInt(offsetStr)
 
 	idStr := c.Param("id")
-	id, err := extractint(idStr)
+	id, err := extractInt(idStr)
 	if err != nil {
 		println(err)
 	}
@@ -183,4 +217,29 @@ func SetUserUTCOffset(c *gin.Context) {
 	usr.UTCOffset = offset
 	db.Save(&usr)
 
+	c.IndentedJSON(http.StatusOK, true)
+}
+
+func CreateUser(c *gin.Context) {
+	id := parseUInt(c.Param("id"))
+	usr := User{ID: id}
+	db.Create(&usr)
+	c.IndentedJSON(http.StatusOK, usr)
+}
+
+func CreateToDo(c *gin.Context) {
+	id := parseUInt(c.Param("id"))
+	name := c.Param("name")
+	todo := ToDo{UserID: id, Name: name}
+	db.Create(&todo)
+	c.IndentedJSON(http.StatusOK, todo)
+}
+
+func ToggleToDo(c *gin.Context) {
+	id := parseUInt(c.Param("id"))
+	todo := ToDo{}
+	db.First(&todo, id)
+	todo.Completed = !todo.Completed
+	db.Save(&todo)
+	c.IndentedJSON(http.StatusOK, todo)
 }
