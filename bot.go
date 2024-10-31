@@ -13,7 +13,7 @@ var appKeyboard = tgbotapi.NewInlineKeyboardMarkup(
 
 func main() {
 	// i already removed it, don't even try :)
-	bot, err := tgbotapi.NewBotAPI("6446614126:AAHqSlZTpPNiTP3ZNjgigfcKvsjZkhNjiWA")
+	bot, err := tgbotapi.NewBotAPI(os.Getenv("TELEGRAM_API_KEY"))
 	if err != nil {
 		log.Panic(err)
 	}
