@@ -7,11 +7,12 @@ import (
 
 var appKeyboard = tgbotapi.NewInlineKeyboardMarkup(
 	tgbotapi.NewInlineKeyboardRow(
-		tgbotapi.NewInlineKeyboardButtonURL("portal", "http://127.0.0.1:9090"),
+		tgbotapi.NewInlineKeyboardButtonURL("portal", "http://127.0.0.1:9090/portal"),
 	),
 )
 
 func main() {
+	// i already removed it, don't even try :)
 	bot, err := tgbotapi.NewBotAPI("6446614126:AAHqSlZTpPNiTP3ZNjgigfcKvsjZkhNjiWA")
 	if err != nil {
 		log.Panic(err)
@@ -30,17 +31,17 @@ func main() {
 
 		if update.Message != nil {
 			// confighelper, will echo message
-			msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Opening bot portal...")
+			var msg tgbotapi.MessageConfig
 
 			switch update.Message.Text {
 			case "open":
+				msg = tgbotapi.NewMessage(update.Message.Chat.ID, "Opening bot portal...")
 				msg.ReplyMarkup = appKeyboard
+				if _, err = bot.Send(msg); err != nil {
+					log.Println(err)
+				}
 			}
 
-			// Send the message.
-			if _, err = bot.Send(msg); err != nil {
-				panic(err)
-			}
 		} else if update.CallbackQuery != nil {
 			// And finally, send a message containing the data received.
 			msg := tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, update.CallbackQuery.Data)

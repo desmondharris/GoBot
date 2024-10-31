@@ -3,14 +3,8 @@
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="wasm_exec.js"></script>
-    <script src="apiwrapper.js"></script>
-    <script>
-        const go = new Go();
-        WebAssembly.instantiateStreaming(fetch("go.wasm"), go.importObject).then((result) => {
-            go.run(result.instance);
-        });
-    </script>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script src="assets/apiwrapper.js"></script>
     <style>
         /* Basic reset and dark theme setup */
         body {
@@ -77,30 +71,30 @@
     <header>
         <h1>GoBot</h1>
         <nav>
-            <a href="events.html">Events</a>
-            <a href="todo.html">To-Do</a>
+            <a href="assets/events.html">Events</a>
+            <a href="assets/todo.html">To-Do</a>
         </nav>
     </header>
     <h3>Upcoming Events</h3>
     <!-- Event list -->
     <ul class="event-list">
-        <li class="event-item">
+        <li class="event-item" id="event1">
             Event One<br>
             Monday, 09:00
         </li>
-        <li class="event-item">
+        <li class="event-item" id="event2">
             Event Two<br>
             Tuesday, 13:30
         </li>
-        <li class="event-item">
+        <li class="event-item" id="event3">
             Event Three<br>
             Wednesday, 17:00
         </li>
-        <li class="event-item">
+        <li class="event-item" id="event4">
             Event Four<br>
             Thursday, 10:00
         </li>
-        <li class="event-item">
+        <li class="event-item" id="event5">
             Event Five<br>
             Friday, 15:45
         </li>
@@ -109,19 +103,8 @@
 
 </body>
 <script>
-    /*
-    Wrappers for go functions should go here.
-    For example:
-    var json = function(input) {
-        jsonoutput.value = formatJSON(input)
-    }
-    where there's a button with onclick="json(jsoninput.value)
-    And a go function in go.wasm that has line
-    js.Global().Set("formatJSON", jsonWrapper())
-    wrapper format is at: https://golangbot.com/go-webassembly-dom-access/
-    */
-    var json = function(input) {
-        jsonoutput.value = formatJSON(input)
-    }
+    document.addEventListener('DOMContentLoaded', async () => {
+        await populateEvents(1);
+    });
 </script>
 </html>

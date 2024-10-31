@@ -106,6 +106,7 @@
       background-color: #5aa8a2;
     }
   </style>
+  <script src="apiwrapper.js"></script>
 </head>
 <body>
 
@@ -122,7 +123,7 @@
   <!-- Event Form -->
   <div class="form-section">
     <h2>Event</h2>
-    <form>
+    <form onsubmit="submitEventForm(event)">
       <label for="event-name">Event Name</label>
       <input type="text" id="event-name" name="event-name">
 
@@ -133,15 +134,15 @@
       <input type="time" id="event-time" name="event-time">
 
       <label>Reminders</label>
-      <div class="checkbox-container">
-        <label><input type="checkbox" name="reminder" value="5 minutes"> 5 minutes</label>
-        <label><input type="checkbox" name="reminder" value="15 minutes"> 15 minutes</label>
-        <label><input type="checkbox" name="reminder" value="30 minutes"> 30 minutes</label>
-        <label><input type="checkbox" name="reminder" value="1 hour"> 1 hour</label>
-        <label><input type="checkbox" name="reminder" value="2 hours"> 2 hours</label>
-        <label><input type="checkbox" name="reminder" value="1 day"> 1 day</label>
-        <label><input type="checkbox" name="reminder" value="2 days"> 2 days</label>
-        <label><input type="checkbox" name="reminder" value="1 week"> 1 week</label>
+      <div class="checkbox-container" id="event-reminder-box">
+        <label><input type="checkbox" name="reminder" value="5-minutes"> 5 minutes</label>
+        <label><input type="checkbox" name="reminder" value="15-minutes"> 15 minutes</label>
+        <label><input type="checkbox" name="reminder" value="30-minutes"> 30 minutes</label>
+        <label><input type="checkbox" name="reminder" value="1-hour"> 1 hour</label>
+        <label><input type="checkbox" name="reminder" value="2-hours"> 2 hours</label>
+        <label><input type="checkbox" name="reminder" value="1-day"> 1 day</label>
+        <label><input type="checkbox" name="reminder" value="2-days"> 2 days</label>
+        <label><input type="checkbox" name="reminder" value="1-week"> 1 week</label>
       </div>
 
       <button type="submit">Create</button>
